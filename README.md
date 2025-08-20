@@ -68,8 +68,16 @@ npx expo run:ios && npx expo run:android
 
 1. Create a [production API key](https://docs.crossmint.com/introduction/platform/api-keys/client-side).
 
-2. Add the API key to the `.env` file.
+2. **Important**: Add your mobile app identifiers to the production API key:
+   - For iOS: Add your bundle ID (e.g., `com.company.appname`)
+   - For Android: Add your package name (e.g., `com.company.appname`)
+   
+   This step is critical as production enforces mobile app identifier whitelisting strictly, unlike staging. Failure to whitelist your app identifiers will cause requests to fail silently in production.
+
+3. Add the API key to the `.env` file.
 
 ```bash
 EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY=your_api_key
 ```
+
+For detailed instructions on mobile app identifier setup, see the [Mobile App Identifiers documentation](https://docs.crossmint.com/introduction/platform/api-keys/client-side#mobile-app-identifiers).
