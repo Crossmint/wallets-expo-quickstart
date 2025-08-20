@@ -72,7 +72,7 @@ npx expo run:ios && npx expo run:android
    - For iOS: Add your bundle ID (e.g., `com.company.appname`)
    - For Android: Add your package name (e.g., `com.company.appname`)
    
-   This step is critical as production enforces mobile app identifier whitelisting strictly, unlike staging. Failure to whitelist your app identifiers will cause requests to fail silently in production.
+   Production requires mobile app identifier whitelisting, unlike staging. Make sure to whitelist your app identifiers to avoid request failures in production.
 
 3. Add the API key to the `.env` file.
 
