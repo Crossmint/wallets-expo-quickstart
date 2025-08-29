@@ -16,22 +16,8 @@ export default function RootLayout() {
             },
           }}
         >
-          <Stack.Screen
-            name="login"
-            options={{
-              contentStyle: {
-                backgroundColor: "#FFFFFF",
-              },
-            }}
-          />
-          <Stack.Screen
-            name="wallet"
-            options={{
-              contentStyle: {
-                backgroundColor: "#F8FAFC",
-              },
-            }}
-          />
+          <Stack.Screen name="wallet" />
+          <Stack.Screen name="authenticate" />
         </Stack>
       </View>
     </CrossmintProviders>

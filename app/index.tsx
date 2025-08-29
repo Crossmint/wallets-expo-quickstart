@@ -8,9 +8,6 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from "react-native";
-import { Redirect } from "expo-router";
-import { useCrossmintAuth } from "@crossmint/client-sdk-react-native-ui";
-import * as Linking from "expo-linking";
 import Balance from "./balance";
 import Transfer from "./transfer";
 import DelegatedSigners from "./delegated-signer";
@@ -18,11 +15,17 @@ import Logout from "./logout";
 import Wallet from "./wallet";
 import OTPModal from "../components/otp-modal";
 import { useOTPVerification } from "../hooks/use-otp-verification";
+import { useStytch, useStytchUser } from "@stytch/react-native";
+import { useCrossmint, useWallet } from "@crossmint/client-sdk-react-native-ui";
+import Login from "./login";
+
 
 export default function Index() {
-  const { createAuthSession, status } = useCrossmintAuth();
-  const url = Linking.useLinkingURL();
   const [activeTab, setActiveTab] = useState<TabKey>("wallet");
+  const { user, fromCache } = useStytchUser();
+  const { setJwt, crossmint } = useCrossmint();
+  const { wallet, status: walletStatus, getOrCreateWallet } = useWallet();
+  const stytch = useStytch();
   
   // OTP verification hook
   const {
@@ -34,13 +37,38 @@ export default function Index() {
     handleCancelOTP,
   } = useOTPVerification();
 
-  useEffect(() => {
-    if (url != null) {
-      createAuthSession(url);
-    }
-  }, [url, createAuthSession]);
+  const isLoggedIn = wallet != null && stytch && user != null;
+  const isLoading = walletStatus === "in-progress" && !stytch && !fromCache;
 
-  if (status === "initializing") {
+  useEffect(() => {
+    // Link the logged in user to the Crossmint SDK
+    stytch.session.onChange(() => {
+      const tokens = stytch.session.getTokens();
+      setJwt(tokens?.session_jwt || undefined);
+    });
+  }, [stytch]);
+
+  useEffect(() => {
+    async function initializeWallet() {
+      console.log("initializing wallet");
+      await getOrCreateWallet({
+        chain: "solana",
+        signer: {
+          type: "phone",
+          phone: user?.phone_numbers[0].phone_number
+        },
+      });
+    }
+
+    initializeWallet();
+  }, [crossmint.jwt]);
+
+  if (!isLoggedIn) {
+    return <Login />;
+  }
+
+  if (isLoading) {
+    console.log("loading");
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
@@ -48,9 +76,8 @@ export default function Index() {
     );
   }
 
-  if (status === "logged-out") {
-    return <Redirect href="/login" />;
-  }
+
+  console.log("rendering");
 
   return (
     <SafeAreaView style={styles.container}>

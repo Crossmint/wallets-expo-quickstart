@@ -14,11 +14,13 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@crossmint/client-sdk-react-native-ui": "^0.10.1",
+    "@crossmint/client-sdk-react-native-ui": "^0.10.9",
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
+    "@stytch/react-native": "^0.61.0",
+    "@stytch/react-native-inappbrowser-reborn": "^3.7.2",
     "buffer": "^6.0.3",
     "expo": "~53.0.10",
     "expo-blur": "~14.1.5",
