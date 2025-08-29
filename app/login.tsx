@@ -5,6 +5,7 @@ import {
   RNUIProducts,
   OTPMethods,
 } from "@stytch/react-native";
+import { View } from "react-native";
 
 export default function Login() {
   const config = {
@@ -19,5 +20,9 @@ export default function Login() {
 
   const stytch = useStytch();
 
-  return <StytchUI client={stytch} config={config}></StytchUI>;
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginVertical: 100 }}>
+      <StytchUI client={stytch} config={config}></StytchUI>
+    </View>
+  );
 }
