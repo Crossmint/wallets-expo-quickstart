@@ -2,7 +2,7 @@
 <img width="200" alt="Image" src="https://github.com/user-attachments/assets/8b617791-cd37-4a5a-8695-a7c9018b7c70" />
 <br>
 <br>
-<h1>Wallets Expo Quickstart</h1>
+<h1>Wallets Expo Quickstart with Stytch</h1>
 
 <div align="center">
 <a href="https://docs.crossmint.com/introduction/platform/wallets">Docs</a> | <a href="https://crossmint.com/quickstarts">See all quickstarts</a>
@@ -11,7 +11,7 @@
 
 ## Introduction
 
-Create and interact with Crossmint wallets using Crossmint Auth to handle user authentication.
+Create and interact with Crossmint wallets. This quickstart uses [Stytch Auth](https://stytch.com/) and uses your phone number as a signer for that wallet.
 
 **Learn how to:**
 - Create a wallet
@@ -25,6 +25,8 @@ Create and interact with Crossmint wallets using Crossmint Auth to handle user a
 
 ```bash
 git clone https://github.com/crossmint/wallets-expo-quickstart.git && cd wallets-expo-quickstart
+git fetch --all
+git checkout stytch-auth
 ```
 
 2. Install all dependencies:
@@ -57,7 +59,21 @@ cp .env.template .env
 EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY=your_api_key
 ```
 
-6. Run the app:
+5. Create a Stytch project, enable a frontend SDK and get the public token for it.
+```bash
+EXPO_PUBLIC_STYTCH_PUBLIC_TOKEN=your_public_token
+```
+
+6. On your Stytch SDK configuration enable the `Authorized bundle & application IDs` and add the following:
+
+```bash
+com.crossmint.wallets
+```
+ 
+7. In the Crossmint console go to [API keys](https://console.crossmint.com/api-keys) and [set third party authentication](https://docs.crossmint.com/introduction/platform/api-keys/jwt-authentication#third-party-authentication) to `Stytch` with your Stytch public token.
+
+
+8. Run the app:
 
 ```bash
 npx expo run:ios && npx expo run:android
@@ -73,3 +89,5 @@ npx expo run:ios && npx expo run:android
 ```bash
 EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY=your_api_key
 ```
+
+3. Set up Stytch for production and repeat steps 5 and 6 above in your production environment.
