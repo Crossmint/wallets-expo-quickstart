@@ -50,7 +50,6 @@ export default function Index() {
 
   useEffect(() => {
     async function initializeWallet() {
-      console.log("initializing wallet");
       await getOrCreateWallet({
         chain: "solana",
         signer: {
@@ -68,16 +67,12 @@ export default function Index() {
   }
 
   if (isLoading) {
-    console.log("loading");
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
       </View>
     );
   }
-
-
-  console.log("rendering");
 
   return (
     <SafeAreaView style={styles.container}>
