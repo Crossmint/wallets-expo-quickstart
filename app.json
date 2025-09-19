@@ -9,14 +9,14 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.crossmint.wallets",
+      "bundleIdentifier": "com.paellainc.crossmint.wallets",
       "supportsTablet": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "com.crossmint.wallets"
+      "package": "com.paellainc.crossmint.wallets"
     },
     "web": {
       "bundler": "metro",
@@ -42,9 +42,8 @@
         "origin": false
       },
       "eas": {
-        "projectId": "533d7640-09c5-4e8d-a0d3-ffe3be551dab"
+        "projectId": "fe3db416-c3ec-4822-9520-2d023c733d6c"
       }
-    },
-    "owner": "crossmint"
+    }
   }
 }
