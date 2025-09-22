@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@crossmint/client-sdk-react-native-ui':
-        specifier: ^0.10.9
-        version: 0.10.9(ljyds5geqrkn2gxx4azaxn7xda)
+        specifier: ^0.10.15
+        version: 0.10.15(ljyds5geqrkn2gxx4azaxn7xda)
       '@expo/vector-icons':
         specifier: ^14.1.0
         version: 14.1.0(expo-font@13.3.2(expo@53.0.20(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)))(bufferutil@4.0.9)(react-native-webview@13.13.5(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0))(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0))(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0)
@@ -680,19 +680,19 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@crossmint/client-sdk-auth@1.2.29':
-    resolution: {integrity: sha512-tVrmNa9LfVRAx5WeNnL955sgD4CoMazKe1D/0vDV8ymyl3MCF8YgaVMmKwmzsE1VBHUqplfXIby9joJhouribQ==}
+  '@crossmint/client-sdk-auth@1.2.30':
+    resolution: {integrity: sha512-m90bzhkZxSyYm7PxXlO7239aG4ZAsRuXti6p69d70Kam6NcAL/xWYKOFabA0m2V4xZVhOPwoDCBsWPHZ6Jx1tw==}
 
-  '@crossmint/client-sdk-base@1.6.1':
-    resolution: {integrity: sha512-aBT8Zfzz7pmbBQx/jCteg6hkGt8Gn9TAZxp7Z9py2qN6JvHH7GcVzBBl0mmDjeuVcgEIb2OTxkMu24kou2JIkA==}
+  '@crossmint/client-sdk-base@1.6.2':
+    resolution: {integrity: sha512-0/BpH1mGPcLdOxrQTykjuoZZukd2cr67dzv2QbLhurALPE+D7S4tdMW+loRlb5Qv/IHYGOhJGxTOoCo+cZWetg==}
 
-  '@crossmint/client-sdk-react-base@0.5.32':
-    resolution: {integrity: sha512-MI08JYjNkjiRkoScKsIeyI+Ij6/bREOiz8O2OyFPKrVmZFWboQekyjqBjOF1C1VU9ST61gyurEVrrzrLxAf5AQ==}
+  '@crossmint/client-sdk-react-base@0.5.38':
+    resolution: {integrity: sha512-WLzaymNiy5zz6exXJjko+XbEO/lGllRDW4s8+KQP288ekg7Tmp1uVA3BgaOh2oVIeoVDUKkLwcsZMdr5mHbh+w==}
     peerDependencies:
       react: '>=17.0.2'
 
-  '@crossmint/client-sdk-react-native-ui@0.10.9':
-    resolution: {integrity: sha512-i/H3F0dtYJ71ILHEzZc3Xh+tbiOkfZfPumMo7qJo3AFJ4JNULHvz3y6icywLMQCaeddbTXkQ8dytS7d7GfbWgw==}
+  '@crossmint/client-sdk-react-native-ui@0.10.15':
+    resolution: {integrity: sha512-0pJA+1sNbzQhxreJ0ItdVizUTYxQ6xnd/njUgFR/d3UMhRlZ5FavmbgWUzAJDIBiuf/re5XdgOGeG7CDhaBDWA==}
     peerDependencies:
       '@expo/config-plugins': '>=9.0.0'
       react: '>=17.0.2'
@@ -708,17 +708,17 @@ packages:
   '@crossmint/client-sdk-window@1.0.3':
     resolution: {integrity: sha512-Qr6KFYFoh3Cu2W6clsPNncYXHc6WOmF30f7cZu/aLAhlUKdNNS/yT5hHe6ieWv2HWgJoLAA5dAoHC7vbM82u8A==}
 
-  '@crossmint/client-signers@0.0.19':
-    resolution: {integrity: sha512-84Iq+kEdXbPtwyxxMs3zUDg3O+ffEG35sHvJIABEYgA5QYO4za9JLVP4Ju2wR+890UYTvzvUFDyWcuQa450usg==}
+  '@crossmint/client-signers@0.0.20':
+    resolution: {integrity: sha512-OLxtc9e9xeNCKSMjb7RjX1Ajme1rlFkY13Wj50qQY9Fcicrw+Vxu0GUN07URcAyol7Ca8CFTmh3bdHrIEXCWBQ==}
 
-  '@crossmint/common-sdk-auth@1.0.51':
-    resolution: {integrity: sha512-sYcbuybsCAi5gcM20POq+6EPBhEyQyq9Iuee3b6wGAF5tgIg0KT9jOTIDAT7NwHwvTfcK1umwGfmE3Oo8v3fTg==}
+  '@crossmint/common-sdk-auth@1.0.52':
+    resolution: {integrity: sha512-gvALKdxQB6/waf0OosVMZ6wHIodU5+1H8hSmNXa8A62a48l/x4N25Yf8IC0UcvRcFw/QN6ZD5k9yxlu2jvwbUQ==}
 
-  '@crossmint/common-sdk-base@0.9.4':
-    resolution: {integrity: sha512-oOi8Dr10s7b1Vfm5roNEuRqauzNTStzxGZzKt7YgnDbBFUfNd5n6o8+mFoVEJQ+HxOBW01Gh1tUDoE4kg9n67A==}
+  '@crossmint/common-sdk-base@0.9.5':
+    resolution: {integrity: sha512-59nSxZ47UuIzAxe9TKJXyLC8jYIE/E/FDJb0UvyIvL2+wx7UPSsr9oxlohDG7+JpnH4QQTPqd7wLThgfv8ZBEg==}
 
-  '@crossmint/wallets-sdk@0.12.2':
-    resolution: {integrity: sha512-Ydmyp6KbXvLoCD2oIZUHm0mw6gF9rezKlMsu/KdPAUD/MW3scx3EGlzhPSkhnYaX/MwEdQE/t3AhWH4LnOsTjw==}
+  '@crossmint/wallets-sdk@0.14.0':
+    resolution: {integrity: sha512-d0jlyqLEob13VGQwJSHupGsWby+66/WUJrvuopaydJxiFKL9iei9UJQ88xkh+6NuuGiiaUsxqxKMdx3Kr7X7VA==}
 
   '@datadog/browser-core@4.42.2':
     resolution: {integrity: sha512-LnkcdFyNRpMEuvV1ePfKdgRvYh+VqqAiVRoAmgObcuzdYdIwQSfcJp4GFbBgr5v7uF2uhAp/b96MIyKlqi0Ixg==}
@@ -6045,11 +6045,11 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@crossmint/client-sdk-auth@1.2.29(@types/react@19.0.14)(bufferutil@4.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.33.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)':
+  '@crossmint/client-sdk-auth@1.2.30(@types/react@19.0.14)(bufferutil@4.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.33.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)':
     dependencies:
-      '@crossmint/client-sdk-base': 1.6.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
-      '@crossmint/common-sdk-auth': 1.0.51(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-sdk-base': 1.6.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
+      '@crossmint/common-sdk-auth': 1.0.52(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@farcaster/auth-kit': 0.6.0(@types/react@19.0.14)(bufferutil@4.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(utf-8-validate@5.0.10)(viem@2.33.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4))
       jwt-decode: 4.0.0
     transitivePeerDependencies:
@@ -6065,10 +6065,10 @@ snapshots:
       - viem
       - zod
 
-  '@crossmint/client-sdk-base@1.6.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)':
+  '@crossmint/client-sdk-base@1.6.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)':
     dependencies:
       '@crossmint/client-sdk-window': 1.0.3
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@datadog/browser-logs': 4.42.2
       exponential-backoff: 3.1.1
       uuid: 9.0.1
@@ -6080,13 +6080,13 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@crossmint/client-sdk-react-base@0.5.32(bufferutil@4.0.9)(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@crossmint/client-sdk-react-base@0.5.38(bufferutil@4.0.9)(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@crossmint/client-sdk-base': 1.6.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
+      '@crossmint/client-sdk-base': 1.6.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
       '@crossmint/client-sdk-window': 1.0.3
-      '@crossmint/client-signers': 0.0.19
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@crossmint/wallets-sdk': 0.12.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-signers': 0.0.20
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/wallets-sdk': 0.14.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       lodash.isequal: 4.5.0
       react: 19.0.0
     transitivePeerDependencies:
@@ -6098,16 +6098,16 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@crossmint/client-sdk-react-native-ui@0.10.9(ljyds5geqrkn2gxx4azaxn7xda)':
+  '@crossmint/client-sdk-react-native-ui@0.10.15(ljyds5geqrkn2gxx4azaxn7xda)':
     dependencies:
-      '@crossmint/client-sdk-auth': 1.2.29(@types/react@19.0.14)(bufferutil@4.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.33.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
-      '@crossmint/client-sdk-base': 1.6.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
-      '@crossmint/client-sdk-react-base': 0.5.32(bufferutil@4.0.9)(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-sdk-auth': 1.2.30(@types/react@19.0.14)(bufferutil@4.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.33.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+      '@crossmint/client-sdk-base': 1.6.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
+      '@crossmint/client-sdk-react-base': 0.5.38(bufferutil@4.0.9)(react@19.0.0)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@crossmint/client-sdk-rn-window': 0.3.4(react-native-webview@13.13.5(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0))(react-native@0.79.3(@babel/core@7.28.3)(@types/react@19.0.14)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10))(react@19.0.0)
-      '@crossmint/client-signers': 0.0.19
-      '@crossmint/common-sdk-auth': 1.0.51(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@crossmint/wallets-sdk': 0.12.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-signers': 0.0.20
+      '@crossmint/common-sdk-auth': 1.0.52(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/wallets-sdk': 0.14.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@expo/config-plugins': 10.1.2
       '@solana/web3.js': 1.98.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
       bs58: 5.0.0
@@ -6148,14 +6148,14 @@ snapshots:
     dependencies:
       zod: 3.22.4
 
-  '@crossmint/client-signers@0.0.19':
+  '@crossmint/client-signers@0.0.20':
     dependencies:
       zod: 3.22.4
 
-  '@crossmint/common-sdk-auth@1.0.51(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@crossmint/common-sdk-auth@1.0.52(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@crossmint/client-sdk-base': 1.6.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-sdk-base': 1.6.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - '@datadog/browser-rum'
       - bufferutil
@@ -6164,7 +6164,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@crossmint/common-sdk-base@0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@crossmint/common-sdk-base@0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
       '@solana/web3.js': 1.98.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
       bs58: 5.0.0
@@ -6177,11 +6177,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@crossmint/wallets-sdk@0.12.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@crossmint/wallets-sdk@0.14.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
       '@crossmint/client-sdk-window': 1.0.3
-      '@crossmint/client-signers': 0.0.19
-      '@crossmint/common-sdk-base': 0.9.4(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@crossmint/client-signers': 0.0.20
+      '@crossmint/common-sdk-base': 0.9.5(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@hey-api/client-fetch': 0.8.1
       '@solana/web3.js': 1.98.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
       '@stellar/stellar-sdk': 14.0.0-rc.3
