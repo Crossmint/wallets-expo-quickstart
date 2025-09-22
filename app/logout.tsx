@@ -8,7 +8,7 @@ export default function Logout() {
   return (
     <TouchableOpacity style={styles.logoutButton} onPress={logout}>
       <Text style={styles.logoutText}>Logout</Text>
-      <Ionicons name="log-out-outline" size={16} color="#666" />
+      <Ionicons name="log-out-outline" size={16} color="#64748b" />
     </TouchableOpacity>
   );
 }
@@ -17,10 +17,15 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: "rgba(100, 116, 139, 0.1)",
   },
   logoutText: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 15,
+    color: "#64748b",
+    fontWeight: "500",
   },
 });

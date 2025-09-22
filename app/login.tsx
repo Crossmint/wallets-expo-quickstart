@@ -53,8 +53,31 @@ export default function Login() {
           style={styles.logo}
         />
       </View>
-      <Text style={styles.title}>Solana Wallets Quickstart</Text>
-      <Text style={styles.subtitle}>The easiest way to build onchain</Text>
+      <Text style={styles.title}>Wallets Quickstart</Text>
+      <Text style={styles.subtitle}>
+        Create and interact with Crossmint wallets
+      </Text>
+
+      <TouchableOpacity
+        style={[styles.button, styles.buttonSecondary]}
+        onPress={() => loginWithOAuth("google")}
+      >
+        <View style={styles.buttonIconContainer}>
+          <Image
+            source={require("../assets/images/google.png")}
+            style={styles.googleIcon}
+          />
+        </View>
+        <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
+          Sign in with Google
+        </Text>
+      </TouchableOpacity>
+
+      <View style={styles.orContainer}>
+        <View style={styles.orLine} />
+        <Text style={styles.orText}>OR</Text>
+        <View style={styles.orLine} />
+      </View>
 
       <TextInput
         style={styles.input}
@@ -116,27 +139,6 @@ export default function Login() {
           </View>
         </>
       )}
-
-      <View style={styles.orContainer}>
-        <View style={styles.orLine} />
-        <Text style={styles.orText}>OR</Text>
-        <View style={styles.orLine} />
-      </View>
-
-      <TouchableOpacity
-        style={[styles.button, styles.buttonSecondary]}
-        onPress={() => loginWithOAuth("google")}
-      >
-        <View style={styles.buttonIconContainer}>
-          <Image
-            source={require("../assets/images/google.png")}
-            style={styles.googleIcon}
-          />
-        </View>
-        <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
-          Sign in with Google
-        </Text>
-      </TouchableOpacity>
 
       <View style={styles.poweredByContainer}>
         <Image

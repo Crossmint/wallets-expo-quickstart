@@ -64,7 +64,7 @@ export default function DelegateSigners() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.sectionTitle}>Add Delegated Signer</Text>
+      <Text style={styles.sectionTitle}>Delegated Signers</Text>
       <Text style={styles.sectionSubtitle}>
         Allow third parties to sign transactions on behalf of your wallet.{" "}
         <Text
@@ -120,16 +120,20 @@ export default function DelegateSigners() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    flex: 1,
+    paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 18,
-    marginBottom: 4,
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#0f172a",
+    marginBottom: 6,
   },
   sectionSubtitle: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 16,
+    color: "#64748b",
     marginBottom: 24,
+    fontWeight: "400",
   },
   learnMoreLink: {
     color: "#007AFF",

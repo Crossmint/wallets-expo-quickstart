@@ -14,38 +14,33 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function Transfer() {
   const { wallet } = useWallet();
-  const [amount, setAmount] = useState("");
-  const [recipientAddress, setRecipientAddress] = useState("");
-  const [selectedToken, setSelectedToken] = useState<"SOL" | "USDC">("SOL");
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [recipient, setRecipient] = useState<string>("");
+  const [amount, setAmount] = useState<number | null>(null);
+  const [amountInput, setAmountInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
   const [explorerLink, setExplorerLink] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
   const scrollViewRef = useRef<KeyboardAwareScrollView>(null);
 
-  const transferTokens = useCallback(async () => {
-    if (wallet == null) {
+  const handleTransfer = useCallback(async () => {
+    if (wallet == null || recipient == null || amount == null) {
+      Alert.alert("Transfer", "Missing required fields");
       return;
     }
 
     try {
-      setIsPending(true);
-      const { hash, explorerLink } = await wallet.send(
-        recipientAddress,
-        selectedToken,
-        amount
-      );
-      if (hash) {
-        setTxHash(hash);
-        setExplorerLink(explorerLink);
-        setAmount("");
-        setRecipientAddress("");
-      }
+      setIsLoading(true);
+      const txn = await wallet.send(recipient, "usdxm", amount.toString());
+      setExplorerLink(txn.explorerLink);
+      // Reset form after successful transfer
+      setAmountInput("");
+      setAmount(null);
+      setRecipient("");
     } catch (error) {
       Alert.alert("Transfer Failed", `${error}`);
     } finally {
-      setIsPending(false);
+      setIsLoading(false);
     }
-  }, [wallet, selectedToken, recipientAddress, amount]);
+  }, [wallet, recipient, amount]);
 
   return (
     <KeyboardAwareScrollView
@@ -55,81 +50,62 @@ export default function Transfer() {
       showsVerticalScrollIndicator={false}
       extraScrollHeight={20}
     >
-      <Text style={styles.sectionTitle}>Transfer funds</Text>
-      <Text style={styles.sectionSubtitle}>Send funds to another wallet</Text>
+      <View>
+        <Text style={styles.sectionTitle}>Transfer funds</Text>
+        <Text style={styles.sectionSubtitle}>Send funds to another wallet</Text>
 
-      {txHash && (
-        <View style={styles.successMessage}>
-          <Text style={styles.successText}>Transfer successful!</Text>
-          <TouchableOpacity
-            onPress={() =>
-              Linking.openURL(
-                explorerLink || `https://solscan.io/tx/${txHash}?cluster=devnet`
-              )
-            }
-          >
-            <Text style={styles.signatureText}>View on Solscan</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTxHash(null)}>
-            <Text style={styles.dismissText}>Dismiss</Text>
-          </TouchableOpacity>
+        <View style={styles.transferAmountCard}>
+          <View style={styles.amountInputContainer}>
+            <Text style={styles.dollarSign}>$</Text>
+            <TextInput
+              style={styles.amountInput}
+              value={amountInput}
+              onChangeText={(value) => {
+                setAmountInput(value);
+                if (value === "") {
+                  setAmount(null);
+                } else {
+                  const numValue = parseFloat(value);
+                  if (!isNaN(numValue)) {
+                    setAmount(numValue);
+                  }
+                }
+              }}
+              placeholder="0.00"
+              keyboardType="decimal-pad"
+              placeholderTextColor="#94a3b8"
+            />
+          </View>
         </View>
+      </View>
+
+      {explorerLink && !isLoading && (
+        <TouchableOpacity
+          style={styles.explorerLinkContainer}
+          onPress={() => Linking.openURL(explorerLink)}
+        >
+          <Text style={styles.explorerLinkText}>→ View transaction</Text>
+        </TouchableOpacity>
       )}
 
       <View style={styles.formSection}>
-        <Text style={styles.formLabel}>Token</Text>
-        <View style={styles.tokenSelector}>
-          <TouchableOpacity
-            style={styles.tokenOption}
-            onPress={() => setSelectedToken("USDC")}
-          >
-            <View style={styles.radioButton}>
-              {selectedToken === "USDC" && (
-                <View style={styles.radioButtonInner} />
-              )}
-            </View>
-            <Text>USDC</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tokenOption}
-            onPress={() => setSelectedToken("SOL")}
-          >
-            <View style={styles.radioButton}>
-              {selectedToken === "SOL" && (
-                <View style={styles.radioButtonInner} />
-              )}
-            </View>
-            <Text>SOL</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.formLabel}>Amount</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="0.00"
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="decimal-pad"
-        />
-
-        <Text style={styles.formLabel}>Recipient wallet</Text>
+        <Text style={styles.formLabel}>Transfer to</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter wallet address"
-          value={recipientAddress}
-          onChangeText={setRecipientAddress}
+          value={recipient}
+          onChangeText={setRecipient}
         />
 
         <TouchableOpacity
           style={[
             styles.button,
-            (!amount || !recipientAddress || isPending) &&
-              styles.buttonDisabled,
+            (isLoading || !recipient || !amount) && styles.buttonDisabled,
           ]}
-          onPress={transferTokens}
-          disabled={!amount || !recipientAddress || isPending}
+          onPress={handleTransfer}
+          disabled={isLoading || !recipient || !amount}
         >
-          {isPending ? (
+          {isLoading ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
             <Text style={styles.buttonText}>Transfer</Text>
@@ -146,104 +122,104 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 18,
-    marginBottom: 4,
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#0f172a",
+    marginBottom: 6,
   },
   sectionSubtitle: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 16,
+    color: "#64748b",
     marginBottom: 24,
+  },
+  transferAmountCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  amountInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dollarSign: {
+    fontSize: 36,
+    fontWeight: "800",
+    color: "#0f172a",
+    letterSpacing: -0.5,
+  },
+  amountInput: {
+    fontSize: 36,
+    fontWeight: "800",
+    color: "#0f172a",
+    letterSpacing: -0.5,
+    flex: 1,
+    paddingLeft: 4,
+    backgroundColor: "transparent",
+  },
+  explorerLinkContainer: {
+    alignItems: "center",
+    marginVertical: 16,
+  },
+  explorerLinkText: {
+    fontSize: 14,
+    color: "#3b82f6",
+    fontWeight: "500",
   },
   formSection: {
     width: "100%",
   },
   formLabel: {
-    fontSize: 14,
-    marginBottom: 8,
-    marginTop: 16,
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#0f172a",
+    marginBottom: 12,
+    marginTop: 24,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 14,
-    marginBottom: 16,
-    backgroundColor: "#fff",
-  },
-  tokenSelector: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
-  tokenOption: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 24,
-  },
-  radioButton: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#666",
-    marginRight: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  radioButtonInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: "#05b959",
-  },
-  successMessage: {
-    backgroundColor: "#e6ffe6",
-    padding: 16,
+    borderColor: "#e2e8f0",
     borderRadius: 12,
-    marginBottom: 24,
-  },
-  successText: {
-    color: "#008000",
+    padding: 16,
     fontSize: 16,
-    marginBottom: 8,
-  },
-  signatureText: {
-    color: "#666",
-    fontSize: 14,
-    textDecorationLine: "underline",
-    marginBottom: 8,
-  },
-  dismissText: {
-    color: "#008000",
-    fontSize: 14,
-    textDecorationLine: "underline",
+    marginBottom: 20,
+    backgroundColor: "#fff",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
-    backgroundColor: "#05b959",
-    borderRadius: 8,
+    paddingVertical: 16,
+    backgroundColor: "#1e293b",
+    borderRadius: 24,
     width: "100%",
-  },
-  buttonSecondary: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#E8E8E9",
+    marginTop: 8,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   buttonDisabled: {
-    opacity: 0.6,
+    backgroundColor: "#d1d5db",
   },
   buttonText: {
-    fontSize: 14,
-    fontWeight: "500",
+    fontSize: 16,
+    fontWeight: "600",
     color: "#fff",
-  },
-  buttonTextSecondary: {
-    color: "#000",
   },
 });
