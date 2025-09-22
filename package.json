@@ -14,7 +14,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@crossmint/client-sdk-react-native-ui": "^0.10.1",
+    "@crossmint/client-sdk-react-native-ui": "^0.10.15",
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
