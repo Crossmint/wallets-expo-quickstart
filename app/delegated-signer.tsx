@@ -181,16 +181,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 14,
-    backgroundColor: "#05b959",
-    borderRadius: 8,
+    backgroundColor: "#1e293b",
+    borderRadius: 24,
     width: "100%",
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
-    fontSize: 14,
-    fontWeight: "500",
+    fontSize: 16,
+    fontWeight: "600",
     color: "#fff",
   },
 });

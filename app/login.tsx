@@ -22,7 +22,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user != null) {
-      router.push("/");
+      router.replace("/");
     }
   }, [user]);
 

@@ -117,9 +117,6 @@ export default function Transfer() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 24,
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
   },
   transferAmountCard: {
     backgroundColor: "#ffffff",
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 24,
     borderWidth: 1,
     borderColor: "#e2e8f0",

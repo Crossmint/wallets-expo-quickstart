@@ -18,7 +18,7 @@ import ActivityComponent from "./activity";
 import Logout from "./logout";
 import Wallet from "./wallet";
 import OTPModal from "../components/otp-modal";
-import { useOTPVerification } from "../hooks/use-otp-verification";
+import { useOTPVerification } from "../hooks/useOtpVerification";
 
 export default function Index() {
   const { createAuthSession, status } = useCrossmintAuth();
@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     flexGrow: 1,
   },
-
   headerContainer: {
     paddingHorizontal: 24,
     paddingVertical: 20,

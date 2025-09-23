@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import {
@@ -74,12 +73,6 @@ export default function ActivityComponent() {
     }
   };
 
-  const handleAddMoney = () => {
-    // This would trigger the add money function from the balance component
-    // For now, we'll just show an alert since we can't directly access the balance component
-    // Add money button pressed from activity
-  };
-
   if (!hasInitiallyLoaded) {
     return (
       <View style={styles.container}>
@@ -100,14 +93,8 @@ export default function ActivityComponent() {
           <Text style={styles.emptyStateTitle}>Your activity feed</Text>
           <Text style={styles.emptyStateDescription}>
             When you add and send money it shows up here. Get started with
-            adding money to your account
+            adding money to your account.
           </Text>
-          <TouchableOpacity
-            style={styles.addMoneyButton}
-            onPress={handleAddMoney}
-          >
-            <Text style={styles.addMoneyButtonText}>Add money</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -221,20 +208,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 20,
   },
-  addMoneyButton: {
-    backgroundColor: "#1e293b",
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 24,
-  },
-  addMoneyButtonText: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "600",
-  },
   activityList: {
     flex: 1,
-    maxHeight: 378,
   },
   activityItem: {
     flexDirection: "row",

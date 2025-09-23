@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,40 +10,22 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import {
-  useWallet,
-  useCrossmint,
-  type Balances,
-} from "@crossmint/client-sdk-react-native-ui";
+import { useWallet, useCrossmint } from "@crossmint/client-sdk-react-native-ui";
 import Tooltip from "../components/tooltip";
+import { useBalanceInterval } from "@/hooks/useBalanceInterval";
 
 const formatBalance = (amount: string) => {
   return Number.parseFloat(amount).toFixed(2);
 };
-
-let balancesCache: Balances | null = null;
 
 export default function Balance() {
   const { wallet } = useWallet();
   const {
     crossmint: { apiKey, jwt },
   } = useCrossmint();
-  const [balances, setBalances] = useState<Balances | null>(balancesCache);
-  const [refreshing, setRefreshing] = useState(false);
   const [isFunding, setIsFunding] = useState(false);
-
-  const fetchBalances = useCallback(async () => {
-    if (wallet == null) {
-      return;
-    }
-    try {
-      const balances = await wallet.balances(["usdxm"]);
-      setBalances(balances);
-      balancesCache = balances;
-    } catch (error) {
-      Alert.alert("Error fetching wallet balances", `${error}`);
-    }
-  }, [wallet]);
+  const { balances, triggerManualRefresh, isManualRefreshing } =
+    useBalanceInterval();
 
   const handleFund = async () => {
     if (!wallet) {
@@ -79,19 +61,10 @@ export default function Balance() {
         return;
       }
 
-      // Optimistic UI update
-      setBalances((prev) => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          tokens: prev.tokens.map((token) => ({
-            ...token,
-            amount: (Number(token.amount) + fundingAmount).toString(),
-          })),
-        };
-      });
-
-      Alert.alert("Success", `Added $${fundingAmount} USDXM to your wallet!`);
+      Alert.alert(
+        "Success",
+        `Added $${fundingAmount} USDXM to your wallet! Balance will update momentarily.`
+      );
     } catch (error) {
       Alert.alert("Error", `Error getting test USDXM: ${error}`);
     } finally {
@@ -101,16 +74,6 @@ export default function Balance() {
 
   const usdxmToken = balances?.tokens.find((token) => token.symbol === "usdxm");
   const usdxmBalance = formatBalance(usdxmToken?.amount || "0");
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetchBalances();
-    setRefreshing(false);
-  }, [fetchBalances]);
-
-  useEffect(() => {
-    fetchBalances();
-  }, [fetchBalances]);
 
   if (wallet == null) {
     return (
@@ -125,8 +88,8 @@ export default function Balance() {
       contentContainerStyle={styles.container}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshing={isManualRefreshing}
+          onRefresh={triggerManualRefresh}
           tintColor="#05b959"
         />
       }
@@ -166,8 +129,7 @@ export default function Balance() {
           )}
         </TouchableOpacity>
         <Text style={styles.refreshNote}>
-          Refresh the page after transferring. Balance may take a few seconds to
-          update.
+          Balance will update automatically. Pull down to refresh manually.
         </Text>
       </View>
     </ScrollView>
@@ -244,7 +206,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e293b",
     paddingVertical: 14,
     paddingHorizontal: 24,
-    borderRadius: 12,
+    borderRadius: 24,
     alignItems: "center",
     marginBottom: 16,
   },
@@ -267,31 +229,5 @@ const styles = StyleSheet.create({
     color: "#64748b",
     textAlign: "center",
     lineHeight: 18,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  tokenIcon: {
-    width: 28,
-    height: 28,
-    resizeMode: "contain",
-  },
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 14,
-    backgroundColor: "#05b959",
-    borderRadius: 8,
-    width: "100%",
-  },
-  buttonText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#fff",
   },
 });
