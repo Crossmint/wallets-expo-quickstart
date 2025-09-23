@@ -8,6 +8,8 @@ type ProvidersProps = {
   children: React.ReactNode;
 };
 
+const chain = (process.env.EXPO_PUBLIC_CHAIN ?? "solana") as any;
+
 export default function CrossmintProviders({ children }: ProvidersProps) {
   const apiKey = process.env.EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY;
   if (apiKey == null) {
@@ -19,7 +21,7 @@ export default function CrossmintProviders({ children }: ProvidersProps) {
       <CrossmintAuthProvider>
         <CrossmintWalletProvider
           createOnLogin={{
-            chain: "solana",
+            chain: chain,
             signer: {
               type: "email",
             },

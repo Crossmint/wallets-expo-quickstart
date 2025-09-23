@@ -128,19 +128,20 @@ const styles = StyleSheet.create({
   verifyButton: {
     width: "100%",
     height: 56,
-    backgroundColor: "#05b959",
-    borderRadius: 8,
+    backgroundColor: "#1e293b",
+    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
   },
   buttonDisabled: {
-    backgroundColor: "rgb(5 185 89 / 60%)",
+    backgroundColor: "#94a3b8",
+    opacity: 0.7,
   },
   verifyButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "600",
   },
   cancelButton: {
     paddingVertical: 12,

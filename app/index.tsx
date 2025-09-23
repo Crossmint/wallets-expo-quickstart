@@ -14,16 +14,17 @@ import * as Linking from "expo-linking";
 import Balance from "./balance";
 import Transfer from "./transfer";
 import DelegatedSigners from "./delegated-signer";
+import ActivityComponent from "./activity";
 import Logout from "./logout";
 import Wallet from "./wallet";
 import OTPModal from "../components/otp-modal";
-import { useOTPVerification } from "../hooks/use-otp-verification";
+import { useOTPVerification } from "../hooks/useOtpVerification";
 
 export default function Index() {
   const { createAuthSession, status } = useCrossmintAuth();
   const url = Linking.useLinkingURL();
   const [activeTab, setActiveTab] = useState<TabKey>("wallet");
-  
+
   // OTP verification hook
   const {
     isVerifyingOTP,
@@ -67,22 +68,24 @@ export default function Index() {
         <Wallet />
       </View>
 
+      <View style={styles.tabsContainer}>
+        <TabNavigation
+          tabs={TABS}
+          activeTab={activeTab}
+          onTabPress={(tab) => setActiveTab(tab as TabKey)}
+        />
+      </View>
+
       <View style={styles.mainContent}>
         <View style={styles.card}>
-          <TabNavigation
-            tabs={TABS}
-            activeTab={activeTab}
-            onTabPress={(tab) => setActiveTab(tab as TabKey)}
-          />
-
           <View style={styles.scrollContent}>
             {activeTab === "wallet" && <Balance />}
             {activeTab === "transfer" && <Transfer />}
+            {activeTab === "activity" && <ActivityComponent />}
             {activeTab === "signers" && <DelegatedSigners />}
           </View>
         </View>
       </View>
-      
       <OTPModal
         visible={isVerifyingOTP}
         otpCode={otpCode}
@@ -103,10 +106,11 @@ type TabItem = {
 const TABS: TabItem[] = [
   { key: "wallet", label: "Balance" },
   { key: "transfer", label: "Transfer" },
+  { key: "activity", label: "Activity" },
   { key: "signers", label: "Signers" },
 ];
 
-type TabKey = "wallet" | "transfer" | "signers";
+type TabKey = "wallet" | "transfer" | "activity" | "signers";
 
 function TabNavigation({
   tabs,
@@ -122,7 +126,7 @@ function TabNavigation({
       {tabs.map((tab) => (
         <TouchableOpacity
           key={tab.key}
-          style={styles.tab}
+          style={[styles.tab, activeTab === tab.key && styles.activeTab]}
           onPress={() => onTabPress(tab.key)}
         >
           <Text
@@ -133,7 +137,6 @@ function TabNavigation({
           >
             {tab.label}
           </Text>
-          {activeTab === tab.key && <View style={styles.activeIndicator} />}
         </TouchableOpacity>
       ))}
     </View>
@@ -143,6 +146,12 @@ function TabNavigation({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f8fafc",
+  },
+  tabsContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 12,
+    alignItems: "center",
   },
   mainContent: {
     flex: 1,
@@ -152,25 +161,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderWidth: 1,
     borderColor: "#e2e8f0",
-    borderRadius: 16,
+    borderRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 0.5,
-    elevation: 1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
     overflow: "visible",
   },
   scrollContent: {
     paddingVertical: 16,
     flexGrow: 1,
   },
-
   headerContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    paddingBottom: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    paddingBottom: 16,
+    backgroundColor: "#f8fafc",
   },
   topRow: {
     flexDirection: "row",
@@ -189,32 +198,34 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: "row",
-    backgroundColor: "#FFF",
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    backgroundColor: "#ffffff",
+    borderRadius: 25,
+    padding: 4,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
   },
   tab: {
-    paddingVertical: 16,
-    marginRight: 24,
-    position: "relative",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginHorizontal: 2,
+  },
+  activeTab: {
+    backgroundColor: "#1e293b",
   },
   tabText: {
     fontSize: 14,
-    color: "#666",
-    paddingHorizontal: 8,
+    color: "#64748b",
+    fontWeight: "500",
+    textAlign: "center",
   },
   activeTabText: {
-    color: "#000",
-  },
-  activeIndicator: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: "#62C560",
+    color: "#ffffff",
+    fontWeight: "600",
   },
 });

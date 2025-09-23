@@ -11,12 +11,14 @@
 
 ## Introduction
 
-Create and interact with Crossmint wallets using Crossmint Auth to handle user authentication.
+Create and interact with Crossmint wallets. This quickstart uses Crossmint Auth and uses your email as a signer for that wallet.
 
 **Learn how to:**
+
 - Create a wallet
-- View its balance for SOL and SPL tokens
-- Send a transaction
+- View its balance for USDXM (USDXM is a test stablecoin by Crossmint) and native tokens
+- View wallet transaction activity
+- Send USDXM or native tokens to another wallet
 - Add delegated signers to allow third parties to sign transactions on behalf of your wallet
 
 ## Setup
@@ -55,6 +57,9 @@ cp .env.template .env
 
 ```bash
 EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY=your_api_key
+
+# Check all supported chains: https://docs.crossmint.com/introduction/supported-chains
+EXPO_PUBLIC_CHAIN=your_chain // optional, default is solana
 ```
 
 6. Run the app:
@@ -62,7 +67,6 @@ EXPO_PUBLIC_CLIENT_CROSSMINT_API_KEY=your_api_key
 ```bash
 npx expo run:ios && npx expo run:android
 ```
-
 
 ## Using in production
 
