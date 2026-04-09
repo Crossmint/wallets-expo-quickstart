@@ -32,7 +32,10 @@
           "backgroundColor": "#0e171b",
           "imageWidth": 100
         }
-      ]
+      ],
+      "@crossmint/client-sdk-react-native-ui",
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

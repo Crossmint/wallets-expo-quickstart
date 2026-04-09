@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Balances, useWallet } from "@crossmint/client-sdk-react-native-ui";
+import { useWallet } from "@crossmint/client-sdk-react-native-ui";
 
 export function useBalanceInterval({
   interval = 5000,
 }: { interval?: number } = {}) {
   const { wallet } = useWallet();
-  const [balances, setBalances] = useState<Balances | undefined>(undefined);
+  const [balances, setBalances] = useState<any>(undefined);
   const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 
   const fetchAndSetBalances = useCallback(
@@ -15,7 +15,7 @@ export function useBalanceInterval({
         if (manual) {
           setIsManualRefreshing(true);
         }
-        const updatedBalances = await wallet?.balances(["usdxm"]);
+        const updatedBalances = await wallet?.balances(["usdxm", "usdc"]);
         const currentUsdxmBalance = balances?.tokens.find(
           (token) => token.symbol === "usdxm"
         )?.amount;
