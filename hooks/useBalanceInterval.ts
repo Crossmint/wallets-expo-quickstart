@@ -16,13 +16,16 @@ export function useBalanceInterval({
           setIsManualRefreshing(true);
         }
         const updatedBalances = await wallet?.balances(["usdxm", "usdc"]);
-        const currentUsdxmBalance = balances?.tokens.find(
-          (token) => token.symbol === "usdxm"
-        )?.amount;
-        const updatedUsdxmBalance = updatedBalances?.tokens.find(
-          (token) => token.symbol === "usdxm"
-        )?.amount;
-        if (currentUsdxmBalance !== updatedUsdxmBalance) {
+        const hasChanged = ["usdxm", "usdc"].some((sym) => {
+          const current = balances?.tokens?.find(
+            (token: any) => token.symbol === sym
+          )?.amount;
+          const updated = updatedBalances?.tokens?.find(
+            (token: any) => token.symbol === sym
+          )?.amount;
+          return current !== updated;
+        });
+        if (hasChanged) {
           setBalances(updatedBalances);
         }
       } catch (error) {
