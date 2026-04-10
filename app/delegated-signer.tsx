@@ -11,6 +11,10 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
+import {
+  Keypair as SolanaKeypair,
+  VersionedTransaction,
+} from "@solana/web3.js";
 
 const SIGNER_TYPES = ["device", "external-wallet"] as const;
 type SignerType = (typeof SIGNER_TYPES)[number];
@@ -30,6 +34,32 @@ function formatSignerLabel(s: any): string {
   return `${type}: ${rest}`;
 }
 
+// Build an external-wallet signer config with the onSign callback.
+// The private key is required so the app can sign transactions locally.
+function buildExternalWalletSigner(
+  chain: string,
+  privateKey: string
+): { type: string; address: string; onSign: (payload: any) => Promise<any> } {
+  if (chain.startsWith("solana")) {
+    const secretKey = Uint8Array.from(JSON.parse(privateKey));
+    const kp = SolanaKeypair.fromSecretKey(secretKey);
+    return {
+      type: "external-wallet",
+      address: kp.publicKey.toBase58(),
+      onSign: async (transaction: VersionedTransaction) => {
+        transaction.sign([kp]);
+        return transaction;
+      },
+    };
+  }
+  // EVM fallback — private key is a hex string (0x...)
+  // For a full EVM implementation, use viem's privateKeyToAccount.
+  throw new Error(
+    `External-wallet signing for chain "${chain}" is not yet implemented in this quickstart. ` +
+      "Add your chain's signing logic in buildExternalWalletSigner()."
+  );
+}
+
 // We want to cache the signers so we don't have to fetch them every time we change tabs
 let signersCache: any[] | null = null;
 
@@ -38,7 +68,8 @@ export default function Signers() {
   const [isLoading, setIsLoading] = useState(false);
   const [signers, setSigners] = useState<any[]>(signersCache || []);
   const [signerType, setSignerType] = useState<SignerType>("device");
-  const [externalAddress, setExternalAddress] = useState("");
+  const [externalPrivateKey, setExternalPrivateKey] = useState("");
+  const [usePrivateKey, setUsePrivateKey] = useState("");
   const [selectedSigner, setSelectedSigner] = useState<any>(null);
   const [selectedLocator, setSelectedLocator] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
@@ -70,23 +101,28 @@ export default function Signers() {
         setStatusMessage("Select a registered signer first");
         return;
       }
-      const { status: _s, ...config } = selectedSigner;
 
-      // external-wallet signers require an onSign callback for useSigner().
-      // In a real app, connect this to your external wallet's signing method.
-      if (config.type === "external-wallet") {
-        config.onSign = async (payload: any) => {
-          throw new Error(
-            "External wallet signing not implemented. " +
-              "Replace this placeholder with your wallet adapter's sign method."
-          );
-        };
+      // external-wallet signers require an onSign callback for useSigner(),
+      // which needs the private key to sign transactions.
+      if (
+        selectedLocator.startsWith("external-wallet:") &&
+        usePrivateKey
+      ) {
+        const config = buildExternalWalletSigner(
+          wallet.chain,
+          usePrivateKey
+        );
+        await wallet.useSigner(config as any);
+        setStatusMessage(
+          `Active signer: external-wallet (${config.address.slice(0, 10)}...)`
+        );
+      } else {
+        const { status: _s, ...config } = selectedSigner;
+        await wallet.useSigner(config as any);
+        setStatusMessage(
+          `Active signer: ${selectedSigner.type} (${selectedSigner.locator})`
+        );
       }
-
-      await wallet.useSigner(config as any);
-      setStatusMessage(
-        `Active signer: ${selectedSigner.type} (${selectedSigner.locator})`
-      );
     } catch (e: any) {
       setStatusMessage(`useSigner error: ${e.message ?? e}`);
     }
@@ -106,18 +142,18 @@ export default function Signers() {
         if (!descriptor) throw new Error("createDeviceSigner not available");
         signer = descriptor;
       } else {
-        if (!externalAddress) {
+        if (!externalPrivateKey) {
           Alert.alert(
             "Error adding signer",
-            "No address provided, please enter a valid wallet address"
+            "Private key is required for external-wallet signers"
           );
           return;
         }
-        signer = { type: "external-wallet", address: externalAddress };
+        signer = buildExternalWalletSigner(wallet.chain, externalPrivateKey);
       }
       await wallet.addSigner(signer as any);
       setStatusMessage(`Added ${signerType} signer`);
-      setExternalAddress("");
+      setExternalPrivateKey("");
       await loadSigners();
     } catch (err: any) {
       Alert.alert("Error adding signer", `${err}`);
@@ -242,10 +278,29 @@ export default function Signers() {
             {selectedLocator || "No signer selected"}
           </Text>
         </View>
+        {selectedLocator.startsWith("external-wallet:") && (
+          <TextInput
+            style={styles.input}
+            placeholder="Private key ([bytes] for Solana, 0x... for EVM)"
+            value={usePrivateKey}
+            onChangeText={setUsePrivateKey}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+        )}
         <TouchableOpacity
-          style={[styles.button, !selectedLocator && styles.buttonDisabled]}
+          style={[
+            styles.button,
+            (!selectedLocator ||
+              (selectedLocator.startsWith("external-wallet:") &&
+                !usePrivateKey)) &&
+              styles.buttonDisabled,
+          ]}
           onPress={handleUseSigner}
-          disabled={!selectedLocator}
+          disabled={
+            !selectedLocator ||
+            (selectedLocator.startsWith("external-wallet:") && !usePrivateKey)
+          }
         >
           <Text style={styles.buttonText}>Use Signer</Text>
         </TouchableOpacity>
@@ -265,7 +320,7 @@ export default function Signers() {
             key={t}
             onPress={() => {
               setSignerType(t);
-              setExternalAddress("");
+              setExternalPrivateKey("");
             }}
             style={[
               styles.signerTypeButton,
@@ -287,10 +342,11 @@ export default function Signers() {
       {signerType === "external-wallet" && (
         <TextInput
           style={styles.input}
-          placeholder="Wallet address (e.g. 0x1234...)"
-          value={externalAddress}
-          onChangeText={setExternalAddress}
+          placeholder="Private key ([bytes] for Solana, 0x... for EVM)"
+          value={externalPrivateKey}
+          onChangeText={setExternalPrivateKey}
           autoCapitalize="none"
+          secureTextEntry
         />
       )}
 
