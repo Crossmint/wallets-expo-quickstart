@@ -71,6 +71,18 @@ export default function Signers() {
         return;
       }
       const { status: _s, ...config } = selectedSigner;
+
+      // external-wallet signers require an onSign callback for useSigner().
+      // In a real app, connect this to your external wallet's signing method.
+      if (config.type === "external-wallet") {
+        config.onSign = async (payload: any) => {
+          throw new Error(
+            "External wallet signing not implemented. " +
+              "Replace this placeholder with your wallet adapter's sign method."
+          );
+        };
+      }
+
       await wallet.useSigner(config as any);
       setStatusMessage(
         `Active signer: ${selectedSigner.type} (${selectedSigner.locator})`
