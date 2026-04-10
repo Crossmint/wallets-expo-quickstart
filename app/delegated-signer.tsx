@@ -132,7 +132,11 @@ export default function Signers() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.sectionTitle}>Signers</Text>
       <Text style={styles.sectionSubtitle}>
         Manage signers that can sign transactions on behalf of your wallet.{" "}
@@ -327,8 +331,9 @@ export default function Signers() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 24,
+    paddingBottom: 40,
   },
   sectionTitle: {
     fontSize: 24,
