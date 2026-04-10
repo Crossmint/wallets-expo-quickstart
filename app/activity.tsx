@@ -6,15 +6,12 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import {
-  useWallet,
-  type Activity,
-} from "@crossmint/client-sdk-react-native-ui";
+import { useWallet } from "@crossmint/client-sdk-react-native-ui";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ActivityComponent() {
   const { wallet } = useWallet();
-  const [activity, setActivity] = useState<Activity | null>(null);
+  const [transfers, setTransfers] = useState<any[] | null>(null);
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -23,8 +20,11 @@ export default function ActivityComponent() {
 
     const fetchActivity = async () => {
       try {
-        const activity = await wallet.experimental_activity();
-        setActivity(activity);
+        const result = await wallet.transfers({
+          tokens: "usdxm,usdc",
+          status: "successful",
+        });
+        setTransfers(result?.data ?? []);
       } catch (_error) {
         // Failed to fetch activity
       } finally {
@@ -49,10 +49,8 @@ export default function ActivityComponent() {
     return `${address.slice(0, 6)}...${address.slice(-6)}`;
   };
 
-  const formatTimestamp = (timestamp: number) => {
-    const date = new Date(
-      timestamp < 10000000000 ? timestamp * 1000 : timestamp
-    );
+  const formatTimestamp = (isoString: string) => {
+    const date = new Date(isoString);
     const now = new Date();
     const diffInMs = now.getTime() - date.getTime();
     if (diffInMs < 0) {
@@ -85,7 +83,7 @@ export default function ActivityComponent() {
     );
   }
 
-  if (!activity?.events || activity.events.length === 0) {
+  if (!transfers || transfers.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Activity</Text>
@@ -107,13 +105,17 @@ export default function ActivityComponent() {
         style={styles.activityList}
         showsVerticalScrollIndicator={false}
       >
-        {activity.events.map((event, index) => {
-          const isIncoming =
-            event.to_address.toLowerCase() === wallet?.address.toLowerCase();
+        {transfers.map((tx: any, index: number) => {
+          const isIncoming = tx.type === "wallets.transfer.in";
+          const tokenSymbol = tx.token?.symbol ?? tx.token?.locator ?? "";
+          const amount = tx.token?.amount ?? "0";
+          const counterpartyAddress = isIncoming
+            ? tx.sender?.address
+            : tx.recipient?.address;
 
           return (
             <View
-              key={`${event.transaction_hash}-${index}`}
+              key={`${tx.transferId ?? tx.onChain?.txId}-${index}`}
               style={[
                 styles.activityItem,
                 index % 2 === 0 ? styles.evenItem : styles.oddItem,
@@ -137,15 +139,19 @@ export default function ActivityComponent() {
                     <Text style={styles.activityType}>
                       {isIncoming ? "Received" : "Sent"}
                     </Text>
-                    <Text style={styles.timestamp}>
-                      {formatTimestamp(event.timestamp)}
-                    </Text>
+                    {tx.completedAt && (
+                      <Text style={styles.timestamp}>
+                        {formatTimestamp(tx.completedAt)}
+                      </Text>
+                    )}
                   </View>
-                  <Text style={styles.addressText}>
-                    {isIncoming
-                      ? `From ${formatAddress(event.from_address)}`
-                      : `To ${formatAddress(event.to_address)}`}
-                  </Text>
+                  {counterpartyAddress && (
+                    <Text style={styles.addressText}>
+                      {isIncoming
+                        ? `From ${formatAddress(counterpartyAddress)}`
+                        : `To ${formatAddress(counterpartyAddress)}`}
+                    </Text>
+                  )}
                 </View>
               </View>
               <View style={styles.activityItemRight}>
@@ -155,9 +161,9 @@ export default function ActivityComponent() {
                     isIncoming ? styles.incomingAmount : styles.outgoingAmount,
                   ]}
                 >
-                  {isIncoming ? "+" : "-"}${event.amount}
+                  {isIncoming ? "+" : "-"}${amount}
                 </Text>
-                <Text style={styles.tokenSymbol}>{event?.token_symbol}</Text>
+                <Text style={styles.tokenSymbol}>{tokenSymbol}</Text>
               </View>
             </View>
           );

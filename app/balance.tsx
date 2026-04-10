@@ -10,7 +10,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import { useWallet, useCrossmint } from "@crossmint/client-sdk-react-native-ui";
+import { useWallet } from "@crossmint/client-sdk-react-native-ui";
 import Tooltip from "../components/tooltip";
 import { useBalanceInterval } from "@/hooks/useBalanceInterval";
 
@@ -20,9 +20,6 @@ const formatBalance = (amount: string) => {
 
 export default function Balance() {
   const { wallet } = useWallet();
-  const {
-    crossmint: { apiKey, jwt },
-  } = useCrossmint();
   const [isFunding, setIsFunding] = useState(false);
   const { balances, triggerManualRefresh, isManualRefreshing } =
     useBalanceInterval();
@@ -31,36 +28,11 @@ export default function Balance() {
     if (!wallet) {
       return;
     }
-    if (apiKey.includes("_production_")) {
-      Alert.alert("Crossmint faucet is not available in production.");
-      return;
-    }
 
     setIsFunding(true);
     try {
       const fundingAmount = 10;
-      const response = await fetch(
-        `https://staging.crossmint.com/api/v1-alpha2/wallets/${wallet.address}/balances`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            Authorization: `Bearer ${jwt}`,
-          },
-          body: JSON.stringify({
-            amount: fundingAmount,
-            token: "usdxm",
-            chain: wallet.chain,
-          }),
-        }
-      );
-
-      if (response != null && !response.ok) {
-        Alert.alert("Failed to get USDXM", response.statusText);
-        return;
-      }
-
+      await wallet.stagingFund(fundingAmount);
       Alert.alert(
         "Success",
         `Added $${fundingAmount} USDXM to your wallet! Balance will update momentarily.`

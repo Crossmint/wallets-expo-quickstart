@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+const TOKENS = ["usdxm", "usdc"];
+
 export default function Transfer() {
   const { wallet } = useWallet();
   const [recipient, setRecipient] = useState<string>("");
@@ -19,7 +21,10 @@ export default function Transfer() {
   const [amountInput, setAmountInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [explorerLink, setExplorerLink] = useState<string | null>(null);
+  const [tokenIdx, setTokenIdx] = useState(0);
   const scrollViewRef = useRef<KeyboardAwareScrollView>(null);
+
+  const token = TOKENS[tokenIdx];
 
   const handleTransfer = useCallback(async () => {
     if (wallet == null || recipient == null || amount == null) {
@@ -29,7 +34,7 @@ export default function Transfer() {
 
     try {
       setIsLoading(true);
-      const txn = await wallet.send(recipient, "usdxm", amount.toString());
+      const txn = await wallet.send(recipient, token, amount.toString());
       setExplorerLink(txn.explorerLink);
       // Reset form after successful transfer
       setAmountInput("");
@@ -40,7 +45,7 @@ export default function Transfer() {
     } finally {
       setIsLoading(false);
     }
-  }, [wallet, recipient, amount]);
+  }, [wallet, recipient, amount, token]);
 
   return (
     <KeyboardAwareScrollView
@@ -53,6 +58,28 @@ export default function Transfer() {
       <View>
         <Text style={styles.sectionTitle}>Transfer funds</Text>
         <Text style={styles.sectionSubtitle}>Send funds to another wallet</Text>
+
+        <View style={styles.tokenSelector}>
+          {TOKENS.map((t, i) => (
+            <TouchableOpacity
+              key={t}
+              onPress={() => setTokenIdx(i)}
+              style={[
+                styles.tokenButton,
+                i === tokenIdx && styles.tokenButtonActive,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.tokenButtonText,
+                  i === tokenIdx && styles.tokenButtonTextActive,
+                ]}
+              >
+                {t.toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
         <View style={styles.transferAmountCard}>
           <View style={styles.amountInputContainer}>
@@ -108,7 +135,9 @@ export default function Transfer() {
           {isLoading ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
-            <Text style={styles.buttonText}>Transfer</Text>
+            <Text style={styles.buttonText}>
+              Transfer {token.toUpperCase()}
+            </Text>
           )}
         </TouchableOpacity>
       </View>
@@ -130,7 +159,32 @@ const styles = StyleSheet.create({
   sectionSubtitle: {
     fontSize: 16,
     color: "#64748b",
-    marginBottom: 24,
+    marginBottom: 16,
+  },
+  tokenSelector: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16,
+  },
+  tokenButton: {
+    padding: 10,
+    borderRadius: 8,
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+  },
+  tokenButtonActive: {
+    backgroundColor: "#1e293b",
+    borderColor: "#1e293b",
+  },
+  tokenButtonText: {
+    color: "#1a1a1a",
+    fontWeight: "500",
+  },
+  tokenButtonTextActive: {
+    color: "#fff",
   },
   transferAmountCard: {
     backgroundColor: "#ffffff",

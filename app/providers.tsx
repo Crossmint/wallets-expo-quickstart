@@ -22,10 +22,9 @@ export default function CrossmintProviders({ children }: ProvidersProps) {
         <CrossmintWalletProvider
           createOnLogin={{
             chain: chain,
-            signer: {
-              type: "email",
-            },
+            recovery: { type: "email" },
           }}
+          showOtpSignerPrompt
         >
           {children}
         </CrossmintWalletProvider>
