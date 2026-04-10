@@ -16,6 +16,7 @@ import {
   VersionedTransaction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
+import { privateKeyToAccount } from "viem/accounts";
 
 const SIGNER_TYPES = ["device", "external-wallet"] as const;
 type SignerType = (typeof SIGNER_TYPES)[number];
@@ -60,12 +61,17 @@ function buildExternalWalletSigner(
       },
     };
   }
-  // EVM fallback — private key is a hex string (0x...)
-  // For a full EVM implementation, use viem's privateKeyToAccount.
-  throw new Error(
-    `External-wallet signing for chain "${chain}" is not yet implemented in this quickstart. ` +
-      "Add your chain's signing logic in buildExternalWalletSigner()."
-  );
+  // EVM (default) — private key is a hex string (0x...)
+  const account = privateKeyToAccount(privateKey.trim() as `0x${string}`);
+  return {
+    type: "external-wallet",
+    address: account.address,
+    onSign: async (message: string) => {
+      return await account.signMessage({
+        message: { raw: message as `0x${string}` },
+      });
+    },
+  };
 }
 
 // We want to cache the signers so we don't have to fetch them every time we change tabs
@@ -289,7 +295,7 @@ export default function Signers() {
         {selectedLocator.startsWith("external-wallet:") && (
           <TextInput
             style={styles.input}
-            placeholder="Private key (base58 or [bytes] for Solana)"
+            placeholder="Private key (0x... for EVM, base58 for Solana)"
             value={usePrivateKey}
             onChangeText={setUsePrivateKey}
             autoCapitalize="none"
@@ -350,7 +356,7 @@ export default function Signers() {
       {signerType === "external-wallet" && (
         <TextInput
           style={styles.input}
-          placeholder="Private key (base58 or [bytes] for Solana)"
+          placeholder="Private key (0x... for EVM, base58 for Solana)"
           value={externalPrivateKey}
           onChangeText={setExternalPrivateKey}
           autoCapitalize="none"
