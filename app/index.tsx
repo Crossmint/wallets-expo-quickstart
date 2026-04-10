@@ -13,7 +13,7 @@ import { useCrossmintAuth } from "@crossmint/client-sdk-react-native-ui";
 import * as Linking from "expo-linking";
 import Balance from "./balance";
 import Transfer from "./transfer";
-import Signers from "./delegated-signer";
+import Signers from "./signers";
 import ActivityComponent from "./activity";
 import Logout from "./logout";
 import Wallet from "./wallet";
