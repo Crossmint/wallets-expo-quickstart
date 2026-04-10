@@ -15,6 +15,7 @@ import {
   Keypair as SolanaKeypair,
   VersionedTransaction,
 } from "@solana/web3.js";
+import bs58 from "bs58";
 
 const SIGNER_TYPES = ["device", "external-wallet"] as const;
 type SignerType = (typeof SIGNER_TYPES)[number];
@@ -41,7 +42,14 @@ function buildExternalWalletSigner(
   privateKey: string
 ): { type: string; address: string; onSign: (payload: any) => Promise<any> } {
   if (chain.startsWith("solana")) {
-    const secretKey = Uint8Array.from(JSON.parse(privateKey));
+    // Accept base58 string (e.g. from Phantom) or JSON byte array ([1,2,3,...])
+    let secretKey: Uint8Array;
+    const trimmed = privateKey.trim();
+    if (trimmed.startsWith("[")) {
+      secretKey = Uint8Array.from(JSON.parse(trimmed));
+    } else {
+      secretKey = bs58.decode(trimmed);
+    }
     const kp = SolanaKeypair.fromSecretKey(secretKey);
     return {
       type: "external-wallet",
@@ -281,7 +289,7 @@ export default function Signers() {
         {selectedLocator.startsWith("external-wallet:") && (
           <TextInput
             style={styles.input}
-            placeholder="Private key ([bytes] for Solana, 0x... for EVM)"
+            placeholder="Private key (base58 or [bytes] for Solana)"
             value={usePrivateKey}
             onChangeText={setUsePrivateKey}
             autoCapitalize="none"
@@ -342,7 +350,7 @@ export default function Signers() {
       {signerType === "external-wallet" && (
         <TextInput
           style={styles.input}
-          placeholder="Private key ([bytes] for Solana, 0x... for EVM)"
+          placeholder="Private key (base58 or [bytes] for Solana)"
           value={externalPrivateKey}
           onChangeText={setExternalPrivateKey}
           autoCapitalize="none"
